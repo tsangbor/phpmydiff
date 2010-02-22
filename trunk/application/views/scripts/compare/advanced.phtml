@@ -3,6 +3,16 @@
     <title>MyDiff</title>
     <link rel="stylesheet" href="<?php echo $this->baseUrl('styles.css'); ?>" type="text/css"/>
 
+    <script type="text/javascript">
+    function jqCheckAll(rel, flag )
+    {
+       if (flag == 0)
+        $("INPUT[@rel=" + rel + "][type='checkbox']").attr('checked', false);
+       else
+        $("INPUT[@rel=" + rel + "][type='checkbox']").attr('checked', true);
+    }
+    </script>
+
   </head>
   <body>
 
@@ -16,21 +26,23 @@
     <h1>Compare</h1>
     <fieldset>
       <input type="checkbox" name="options[type][schema]" value="1" checked="checked" />
-      <label class="right">Schema</label>
+      <label class="right" for="options[type][schema]">Schema</label>
     </fieldset>
     <fieldset>
       <input type="checkbox" name="options[type][data]" value="1" checked="checked" />
-      <label class="right">Data</label>
+      <label class="right" for="options[type][data]">Data</label>
     </fieldset>
 
     <h1>Tables</h1>
     <?php foreach($this->comparison->databases AS $dbI => $database): ?>
       <div class="database item">
         <h2>Database: <?php echo $database->name; ?></h2>
+        <input type="button" value="All" onclick="jqCheckAll('<?php echo $dbI; ?>', 1);" />
+        <input type="button" value="None" onclick="jqCheckAll('<?php echo $dbI; ?>', 0);" />
         <?php foreach($database->getTables() AS $tableI => $table): ?>
           <fieldset>
-            <input type="checkbox" name="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]" value="1" rel="<?php echo $tableI; ?>" checked="checked" />
-            <label class="right"><?php echo $table->name; ?></label>
+            <input type="checkbox" name="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]" value="1" rel="<?php echo $dbI; ?>" checked="checked" />
+            <label class="right" for="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]"><?php echo $table->name; ?></label>
           </fieldset>
         <?php endforeach; ?>
       </div>

@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>MyDiff</title>
+    <link rel="stylesheet" href="styles.css" type="text/css"/>
+
+  </head>
+  <body>
+
+  <form action="compare/" method="post">
+
+    <div class="databaseForm">
+      <h1>Original</h1>
+      <fieldset>
+        <label>Server</label>
+        <input name="database[0][server]" type="text" value="<?php echo $this->database[0]['server']; ?>" />
+      </fieldset>
+      <fieldset>
+        <label>Database</label>
+        <input name="database[0][name]" type="text" value="<?php echo $this->database[0]['name']; ?>" />
+      </fieldset>
+      <fieldset>
+        <label>Username</label>
+        <input name="database[0][username]" type="text" value="<?php echo $this->database[0]['username']; ?>" />
+      </fieldset>
+      <fieldset>
+        <label>Password</label>
+        <input name="database[0][password]" type="password" value="<?php echo $this->database[0]['password']; ?>" />
+      </fieldset>
+    </div>
+
+    <div class="databaseForm">
+      <h1>Compare</h1>
+      <fieldset>
+        <label>Server</label>
+        <input name="database[1][server]" type="text" value="<?php echo $this->database[1]['server']; ?>" />
+      </fieldset>
+      <fieldset>
+        <label>Database</label>
+        <input name="database[1][name]" type="text" value="<?php echo $this->database[1]['name']; ?>" />
+      </fieldset>
+      <fieldset>
+        <label>Username</label>
+        <input name="database[1][username]" type="text" value="<?php echo $this->database[1]['username']; ?>" />
+      </fieldset>
+      <fieldset>
+        <label>Password</label>
+        <input name="database[1][password]" type="password" value="<?php echo $this->database[1]['password']; ?>" />
+      </fieldset>
+    </div>
+
+    <fieldset class="clear">
+      <input type="submit" name="compare" value="Compare" />
+    </fieldset>
+
+  </form>
+
+	</body>
+</html>

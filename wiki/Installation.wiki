@@ -1,0 +1,15 @@
+#summary A guide to installing phpmydiff.
+
+= Requirements =
+
+  * PHP v5+
+  * PDO/MYSQLi extension
+
+
+= Install =
+
+  # Download the latest version of phpmydiff from the Downloads page.
+  # Unzip the project to your www directory
+  # Make the cache folder writable by the web server
+  # Check out application/config/mydiff.ini for any settings you might wish to change
+  # Browse to the project in your browser to get started

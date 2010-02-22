@@ -39,7 +39,7 @@ class MyDiff_Database{
 
     return $this;
   }
-  
+
   public function getDb()
   {
     return $this->_db;
@@ -62,5 +62,15 @@ class MyDiff_Database{
 
     return $this->_tables;
   }
-  
+
+  public function useTables($use)
+  {
+    $tables = $this->getTables();
+
+    foreach($tables AS $tableName => $table)
+      if(!in_array($tableName, $use))
+        unset($this->_tables[$tableName]);
+
+  }
+
 }

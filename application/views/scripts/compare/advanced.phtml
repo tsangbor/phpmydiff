@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>MyDiff</title>
+    <link rel="stylesheet" href="<?php echo $this->baseUrl('styles.css'); ?>" type="text/css"/>
+
+  </head>
+  <body>
+
+  <p><a href="<?php echo $this->baseUrl(''); ?>">Back to database selection</a></p>
+
+  <form action="" method="post">
+    <fieldset class="submit">
+      <input type="submit" value="Compare" />
+    </fieldset>
+
+    <h1>Compare</h1>
+    <fieldset>
+      <input type="checkbox" name="options[type][schema]" value="1" checked="checked" />
+      <label class="right">Schema</label>
+    </fieldset>
+    <fieldset>
+      <input type="checkbox" name="options[type][data]" value="1" checked="checked" />
+      <label class="right">Data</label>
+    </fieldset>
+
+    <h1>Tables</h1>
+    <?php foreach($this->comparison->databases AS $dbI => $database): ?>
+      <div class="database item">
+        <h2>Database: <?php echo $database->name; ?></h2>
+        <?php foreach($database->getTables() AS $tableI => $table): ?>
+          <fieldset>
+            <input type="checkbox" name="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]" value="1" rel="<?php echo $tableI; ?>" checked="checked" />
+            <label class="right"><?php echo $table->name; ?></label>
+          </fieldset>
+        <?php endforeach; ?>
+      </div>
+    <?php endforeach; ?>
+
+    <div style="clear: left;"></div>
+
+    <fieldset class="submit">
+      <input type="submit" value="Compare" />
+    </fieldset>
+  </form>
+
+	</body>
+</html>

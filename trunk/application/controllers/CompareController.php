@@ -2,7 +2,45 @@
 
 class CompareController extends Zend_Controller_Action
 {
-    public function indexAction()
+    public function advancedAction()
+    {
+      $request = $this->getRequest();
+      $id = $request->getParam('id');
+
+      $cache = MyDiff_Cache::init();
+
+      // Create cache and ID if not got one
+      if(!$id || (!$comparison = $cache->load('comparison' . $id)))
+      {
+        $id = uniqid();
+        $databases = $request->getParam('database');
+
+        $comparison = new MyDiff_Comparison;
+        foreach($databases AS $database)
+        {
+          $database = new MyDiff_Database($database);
+          $database->connect();
+          $comparison->addDatabase($database);
+        }
+
+        // Add to cache
+        $cache->save($comparison, 'comparison' . $id);
+
+        // Reload
+        $this->_redirect('compare/advanced/id/' . $id);
+      }
+
+      if($request->isPost())
+      {
+        $options = $request->getParam('options');
+        $cache->save($options, 'options' . $id);
+        $this->_redirect('compare/run/id/' . $id);
+      }
+
+      $this->view->comparison = $comparison;
+    }
+
+    public function runAction()
     {
       $mtime = microtime();
       $mtime = explode(" ",$mtime);
@@ -10,17 +48,17 @@ class CompareController extends Zend_Controller_Action
       $starttime = $mtime;
 
       $request = $this->getRequest();
-      $databases = $request->getParam('database');
+      $id = $request->getParam('id');
 
-      $comparison = new MyDiff_Comparison;
+      $cache = MyDiff_Cache::init();
+      $comparison = $cache->load('comparison' . $id);
+      $options = $cache->load('options' . $id);
 
-      foreach($databases AS $database)
-      {
-        $database = new MyDiff_Database($database);
-        $database->connect(); // remove later?
+      if(!$id || !$comparison || !$options)
+        throw new MyDiff_Exception("Missing options, please go back and try again.");
 
-        $comparison->addDatabase($database);
-      }
+      foreach($comparison->databases AS $database)
+        $database->connect();
 
       $comparison->schema();
       $comparison->data();

@@ -57,11 +57,18 @@ class CompareController extends Zend_Controller_Action
       if(!$id || !$comparison || !$options)
         throw new MyDiff_Exception("Missing options, please go back and try again.");
 
-      foreach($comparison->databases AS $database)
+      // Remove tables not submitted
+      foreach($comparison->databases AS $i => $database)
+      {
+        $database->useTables(array_keys($options['database'][$i]['table']));
         $database->connect();
+      }
 
-      $comparison->schema();
-      $comparison->data();
+      // Do compare types
+      if(isset($options['type']['schema']))
+        $comparison->schema();
+      if(isset($options['type']['data']))
+        $comparison->data();
 
       // Build a list of rows that have changed
       $data = array();
@@ -83,6 +90,7 @@ class CompareController extends Zend_Controller_Action
       }
 
       $this->view->comparison = $comparison;
+      $this->view->options = $options;
       $this->view->data = $data;
 
       $mtime = microtime();
@@ -91,6 +99,7 @@ class CompareController extends Zend_Controller_Action
       $endtime = $mtime;
       $totaltime = ($endtime - $starttime);
 
+      $this->view->id = $id;
       $this->view->totaltime = $totaltime;
       $this->view->totalmem = memory_get_peak_usage(true);
     }

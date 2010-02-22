@@ -6,8 +6,9 @@
   </head>
   <body>
 
-  <p><a href="<?php echo $this->baseUrl(''); ?>">Back to database selection</a></p>
+  <p><a href="<?php echo $this->baseUrl('compare/advanced/id/' . $this->id); ?>">Back to table selection</a></p>
 
+  <?php if(isset($this->options['type']['schema'])): ?>
   <h1>Schema</h1>
   <?php foreach($this->comparison->databases AS $database): ?>
     <div class="database item">
@@ -46,11 +47,13 @@
 
     </div>
   <?php endforeach; ?>
-
   <div style="clear: left;"></div>
+  <?php endif; ?>
 
+  <?php if(isset($this->options['type']['data'])): ?>
   <h1>Data</h1>
   <div class="data">
+  <?php $i = 0; ?>
   <?php foreach($this->data AS $table): ?>
     <?php if(!empty($table['rows'])): ?>
     <h2>Table: <?php echo $table['table']->name; ?></h2>
@@ -78,9 +81,12 @@
       <?php endforeach; ?>
       </tbody>
     </table>
+    <?php $i++; ?>
     <?php endif; ?>
   <?php endforeach; ?>
+  <?php if($i == 0): ?><p>No differences found.</p><?php endif; ?>
   </div>
+  <?php endif; ?>
 
   <p>This page was created in <?php echo $this->totaltime; ?> seconds using <?php echo $this->totalmem; ?> bytes of memory.</p>
 

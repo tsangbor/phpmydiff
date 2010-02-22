@@ -8,16 +8,15 @@
 
   <p><a href="<?php echo $this->baseUrl(''); ?>">Back to database selection</a></p>
 
-  <h1>Schema</h1>
   <?php foreach($this->comparison->databases AS $database): ?>
     <div class="database item">
-      <h2>Database: <?php echo $database->name; ?></h2>
+      <h1><?php echo $database->name; ?></h1>
+
+      <h2>Schema</h2>
       <div class="schema">
-      <?php $i = 0; ?>
       <?php foreach($database->getTables() AS $table): ?>
-        <?php if($table->hasDiffs()): ?>
         <div class="table item <?php echo implode(' ', $table->getAllTags()); ?>">
-          <h3>Table: <?php echo $table->name; ?></h3>
+          <h3><?php echo $table->name; ?></h3>
           <table class="columns" cellspacing="0" cellpadding="0">
           <?php foreach($table->getColumns() AS $column): ?>
             <?php if($column->hasDiffs()): ?>
@@ -34,14 +33,11 @@
                 <?php endif; ?>
               </td>
             </tr>
-            <?php $i++; ?>
             <?php endif; ?>
           <?php endforeach; ?>
           </table>
         </div>
-        <?php endif; ?>
       <?php endforeach; ?>
-      <?php if($i == 0): ?><p>No differences found.</p><?php endif; ?>
       </div>
 
     </div>
@@ -53,7 +49,7 @@
   <div class="data">
   <?php foreach($this->data AS $table): ?>
     <?php if(!empty($table['rows'])): ?>
-    <h2>Table: <?php echo $table['table']->name; ?></h2>
+    <h2><?php echo $table['table']->name; ?></h2>
     <table class="dataTable" cellpadding="0" cellspacing="0">
       <thead>
         <tr>

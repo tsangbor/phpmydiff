@@ -2,45 +2,7 @@
 
 class CompareController extends Zend_Controller_Action
 {
-    public function advancedAction()
-    {
-      $request = $this->getRequest();
-      $id = $request->getParam('id');
-
-      $cache = MyDiff_Cache::init();
-
-      // Create cache and ID if not got one
-      if(!$id || (!$comparison = $cache->load('comparison' . $id)))
-      {
-        $id = uniqid();
-        $databases = $request->getParam('database');
-
-        $comparison = new MyDiff_Comparison;
-        foreach($databases AS $database)
-        {
-          $database = new MyDiff_Database($database);
-          $database->connect();
-          $comparison->addDatabase($database);
-        }
-
-        // Add to cache
-        $cache->save($comparison, 'comparison' . $id);
-
-        // Reload
-        $this->_redirect('compare/advanced/id/' . $id);
-      }
-
-      if($request->isPost())
-      {
-        $options = $request->getParam('options');
-        $cache->save($options, 'options' . $id);
-        $this->_redirect('compare/run/id/' . $id);
-      }
-
-      $this->view->comparison = $comparison;
-    }
-
-    public function runAction()
+    public function indexAction()
     {
       $mtime = microtime();
       $mtime = explode(" ",$mtime);
@@ -48,17 +10,17 @@ class CompareController extends Zend_Controller_Action
       $starttime = $mtime;
 
       $request = $this->getRequest();
-      $id = $request->getParam('id');
+      $databases = $request->getParam('database');
 
-      $cache = MyDiff_Cache::init();
-      $comparison = $cache->load('comparison' . $id);
-      $options = $cache->load('options' . $id);
+      $comparison = new MyDiff_Comparison;
 
-      if(!$id || !$comparison || !$options)
-        throw new MyDiff_Exception("Missing options, please go back and try again.");
+      foreach($databases AS $database)
+      {
+        $database = new MyDiff_Database($database);
+        $database->connect(); // remove later?
 
-      foreach($comparison->databases AS $database)
-        $database->connect();
+        $comparison->addDatabase($database);
+      }
 
       $comparison->schema();
       $comparison->data();

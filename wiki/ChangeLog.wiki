@@ -1,0 +1,12 @@
+#summary List of changes through versions
+#labels Phase-Implementation
+
+= v0.0.2 =
+
+  * Removed Zend lib files that aren't used
+  * Added advanced page to choose which tables you would like to compare
+
+
+= v0.0.1 =
+
+  * First beta release

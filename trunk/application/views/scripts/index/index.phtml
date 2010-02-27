@@ -11,6 +11,14 @@
     <div class="databaseForm">
       <h1>Original</h1>
       <fieldset>
+        <label>Type</label>
+        <select name="database[0][type]">
+        <?php foreach($this->types AS $key => $name): ?>
+			<option value="<?php echo $key; ?>"><?php echo $name; ?></option>
+		<?php endforeach; ?>
+		</select>
+	  </fieldset>
+      <fieldset>
         <label>Server</label>
         <input name="database[0][server]" type="text" value="<?php echo $this->database[0]['server']; ?>" />
       </fieldset>
@@ -30,6 +38,14 @@
 
     <div class="databaseForm">
       <h1>Compare</h1>
+      <fieldset>
+        <label>Type</label>
+        <select name="database[0][type]">
+        <?php foreach($this->types AS $key => $name): ?>
+			<option value="<?php echo $key; ?>"><?php echo $name; ?></option>
+		<?php endforeach; ?>
+		</select>
+	  </fieldset>
       <fieldset>
         <label>Server</label>
         <input name="database[1][server]" type="text" value="<?php echo $this->database[1]['server']; ?>" />

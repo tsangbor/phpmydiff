@@ -2,14 +2,12 @@
   <head>
     <title>MyDiff</title>
     <link rel="stylesheet" href="<?php echo $this->baseUrl('styles.css'); ?>" type="text/css"/>
+    <script src="<?php echo $this->baseUrl('js/jquery.min.js'); ?>" type="text/javascript"></script>
 
     <script type="text/javascript">
-    function jqCheckAll(rel, flag )
+    function jqCheckAll(rel, checked)
     {
-       if (flag == 0)
-        $("INPUT[@rel=" + rel + "][type='checkbox']").attr('checked', false);
-       else
-        $("INPUT[@rel=" + rel + "][type='checkbox']").attr('checked', true);
+        $("INPUT[rel=" + rel + "][type='checkbox']").attr('checked', checked);
     }
     </script>
 
@@ -37,11 +35,11 @@
     <?php foreach($this->comparison->databases AS $dbI => $database): ?>
       <div class="database item">
         <h2>Database: <?php echo $database->name; ?></h2>
-        <input type="button" value="All" onclick="jqCheckAll('<?php echo $dbI; ?>', 1);" />
-        <input type="button" value="None" onclick="jqCheckAll('<?php echo $dbI; ?>', 0);" />
+        <input type="button" value="All" onclick="jqCheckAll('db<?php echo $dbI; ?>', true);" />
+        <input type="button" value="None" onclick="jqCheckAll('db<?php echo $dbI; ?>', false);" />
         <?php foreach($database->getTables() AS $tableI => $table): ?>
           <fieldset>
-            <input type="checkbox" name="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]" value="1" rel="<?php echo $dbI; ?>" checked="checked" />
+            <input type="checkbox" name="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]" value="1" rel="db<?php echo $dbI; ?>" checked="checked" />
             <label class="right" for="options[database][<?php echo $dbI; ?>][table][<?php echo $tableI; ?>]"><?php echo $table->name; ?></label>
           </fieldset>
         <?php endforeach; ?>

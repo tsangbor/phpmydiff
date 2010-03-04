@@ -68,30 +68,32 @@ class CompareController extends Zend_Controller_Action
       if(isset($options['type']['schema']))
         $comparison->schema();
       if(isset($options['type']['data']))
+      {
         $comparison->data();
 
-      // Build a list of rows that have changed
-      $data = array();
-      $tables = array($comparison->databases[0]->getTables(), $comparison->databases[1]->getTables());
-      foreach($tables[0] AS $tableName => $table)
-      {
-        if(!$table->hasDiffs('MyDiff_Diff_Table_New'))
+        // Build a list of rows that have changed
+        $data = array();
+        $tables = array($comparison->databases[0]->getTables(), $comparison->databases[1]->getTables());
+        foreach($tables[0] AS $tableName => $table)
         {
-          $rows = array($tables[0][$tableName]->getRows(), (isset($tables[1][$tableName])? $tables[1][$tableName]->getRows() : array()));
+          if(!$table->hasDiffs('MyDiff_Diff_Table_New'))
+          {
+            $rows = array($tables[0][$tableName]->getRows(), (isset($tables[1][$tableName])? $tables[1][$tableName]->getRows() : array()));
 
-          // remove values that don't exist in original
-          if(!empty($rows[0]) && !empty($rows[1]))
-          foreach($rows[1] AS &$row)
-            $row->data = array_intersect_key($row->data, reset($rows[0])->data);
+            // remove values that don't exist in original
+            if(!empty($rows[0]) && !empty($rows[1]))
+            foreach($rows[1] AS &$row)
+              $row->data = array_intersect_key($row->data, reset($rows[0])->data);
 
-          $rows = array_merge($rows[0], $rows[1]);
-          $data[] = array('table' => $table, 'rows' => $rows);
+            $rows = array_merge($rows[0], $rows[1]);
+            $data[] = array('table' => $table, 'rows' => $rows);
+          }
         }
+        $this->view->data = $data;
       }
 
       $this->view->comparison = $comparison;
       $this->view->options = $options;
-      $this->view->data = $data;
 
       $mtime = microtime();
       $mtime = explode(" ",$mtime);

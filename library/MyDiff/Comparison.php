@@ -92,11 +92,8 @@ class MyDiff_Comparison{
     // Grab list of tables for each database
     $tables = array($this->databases[0]->getTables(), $this->databases[1]->getTables());
 
-    // Extract just the table names
-    $tableNames = array(array_keys($tables[0]), array_keys($tables[1]));
-
     // Grab tables that are in both
-    $matchingTables = array_intersect($tableNames[0], $tableNames[1]);
+    $matchingTables = array_intersect(array_keys($tables[0]), array_keys($tables[1]));
 
     foreach($matchingTables AS $tableName)
     {

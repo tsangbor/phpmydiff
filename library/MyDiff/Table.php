@@ -85,7 +85,7 @@ class MyDiff_Table extends MyDiff_Item{
   }
 
   /**
-   * Remove data from rows that don't have any differences
+   * Remove rows that don't have any differences
    */
   public function pruneRows()
   {

@@ -22,7 +22,7 @@ class MyDiff_Db_Table extends Zend_Db_Table{
           if (empty($this->_primary)) {
               $this->noPrimaryKey = true;
               $col = reset($this->_metadata);
-              $this->_primary[] = $col['COLUMN_NAME'];
+              $this->_primary[1] = $col['COLUMN_NAME'];
               //require_once 'Zend/Db/Table/Exception.php';
               //throw new Zend_Db_Table_Exception('A table must have a primary key, but none was found');
           }

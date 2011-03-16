@@ -130,4 +130,16 @@ class MyDiff_Table extends MyDiff_Item {
         $this->_rows = array();
     }
 
+    /**
+     * Override getDiffs for column diffs too
+     */
+    public function getDiffs($type = null) {
+        $allDiffs = parent::getDiffs($type);
+        foreach ($this->getColumns() AS $column) {
+            $allDiffs = array_merge($allDiffs, $column->getDiffs($type));
+        }
+
+        return $allDiffs;
+    }
+
 }

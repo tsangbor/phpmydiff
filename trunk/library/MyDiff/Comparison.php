@@ -56,10 +56,12 @@ class MyDiff_Comparison {
             $missingColumns = array_diff_key($tableColumns[1], $tableColumns[0]);
 
             // Assign diffs
-            foreach ($newColumns AS $column)
+            foreach ($newColumns AS $column){
                 $column->addDiff(new MyDiff_Diff_Table_Column_New);
-            foreach ($missingColumns AS $column)
+            }
+            foreach ($missingColumns AS $column){
                 $column->addDiff(new MyDiff_Diff_Table_Column_Missing);
+            }
 
             unset($newColumns, $missingColumns);
 
